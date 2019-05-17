@@ -1,0 +1,28 @@
+private void BtnThem_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                
+                ConnectDB();
+                cmd = new SqlCommand();
+                cmd.Connection = conn;               
+                cmd.CommandText = "Insert into Sach values(@masach,@tensach,@ngonngu,@gia,@tomtat)";
+                cmd.Parameters.Add("@masach", SqlDbType.NChar).Value = txtMaSach.Text;
+                cmd.Parameters.Add("@tensach", SqlDbType.NVarChar).Value = txtTenSach.Text;
+                string nn = ((ComboBoxItem)cboNgonNgu.SelectedItem).Content.ToString();
+                cmd.Parameters.Add("@ngonngu", SqlDbType.NVarChar).Value = nn;
+                string gia = ((ListBoxItem)lbGia.SelectedItem).Content.ToString();
+                cmd.Parameters.Add("@gia", SqlDbType.Int).Value = Convert.ToInt32(gia);
+                string tomtat = "";
+                if (rdoCo.IsChecked == true) tomtat = "Co";
+                else tomtat = "Khong";
+                cmd.Parameters.Add("@tomtat", SqlDbType.NVarChar).Value = tomtat;
+                int n = cmd.ExecuteNonQuery();
+                if (n > 0) MessageBox.Show("Success");
+                else MessageBox.Show("Fail");
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
